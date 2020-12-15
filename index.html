@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+    }
+
+    body {
+        background: linear-gradient(90deg, #1CB5E0 0%, #000851 100%);
+        background-size: cover;
+        height: 100vh;
+    }
+
+    .clock {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .clock-digital {
+        display: flex;
+        margin-bottom: 4rem;
+        color: #fff;
+    }
+
+    .clock-digital p {
+        font-size: 4rem;
+        margin: 2px;
+        padding: 16px 16px 0;
+        width: 60px;
+        text-align: center;
+    }
+
+    .clock-digital .hours {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #ff1464fa;
+        margin: 4px;
+    }
+
+    .clock-digital .minutes {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #000;
+        margin: 4px;
+    }
+
+    .clock-digital .seconds {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #2169f3;
+        margin: 4px;
+    }
+
+    .clock-digital .meridian {
+        align-self: flex-end;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #fff;
+        margin: 4px;
+        color: black;
+    }
+
+    .clock-digital .meridian p {
+        padding: 0;
+        width: auto;
+        font-size: 2rem;
+    }
+
+    .clock-face {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        background: white;
+        box-shadow: 0 0 10px white;
+        padding: 8px;
+        position: relative;
+    }
+
+    .hand {
+        position: relative;
+        transform: rotate(90deg);
+        transform-origin: 100%;
+        transition: all cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    }
+
+    .hours-hand {
+        background: #ff1464fa;
+        height: 6px;
+        width: 30%;
+        left: 20%;
+        top: 50%;
+    }
+
+    .minutes-hand {
+        background: #000;
+        height: 4px;
+        width: 40%;
+        left: 10%;
+        top: 47%;
+    }
+
+    .seconds-hand {
+        background: #2169f3;
+        height: 2px;
+        width: 50%;
+        top: 45%;
+    }
+
+    .brand {
+        position: absolute;
+        top: 50%;
+        right: 30%;
+        opacity: 1;
+    }
+</style>
+
+<body>
+
+    <div class="clock">
+        <div class="clock-digital">
+            <div class="hours">
+                <p></p>
+                <span>hours</span>
+            </div>
+
+            <div class="minutes">
+                <p></p>
+                <span>minutes</span>
+            </div>
+            <div class="seconds">
+                <p></p>
+                <span>seconds</span>
+            </div>
+            <div class="meridian">
+                <p></p>
+            </div>
+        </div>
+        <div class="clock-face">
+            <div class="hand hours-hand"></div>
+            <div class="hand minutes-hand"></div>
+            <div class="hand seconds-hand"></div>
+            <div class="brand">KANTE</div>
+        </div>
+    </div>
+</body>
+
+<script>
+    const hoursEle = document.getElementsByClassName("hours-hand")[0];
+    const hourP = document.querySelector(".hours p");
+
+    const minutesEle = document.getElementsByClassName("minutes-hand")[0];
+    const minuteP = document.querySelector(".minutes p");
+
+    const secondsEle = document.getElementsByClassName("seconds-hand")[0];
+    const secondP = document.querySelector(".seconds p");
+    const meridianP = document.querySelector(".meridian p");
+
+
+
+
+    function timer() {
+        const currDate = new Date();
+
+        const hours = currDate.getHours();
+        const minutes = currDate.getMinutes();
+        const seconds = currDate.getSeconds();
+
+        const hoursDegree = (hours / 12) * 360 + 90;
+        const minutesDegree = (minutes / 60) * 360 + 90;
+        const secondsDegree = (seconds / 60) * 360 + 90;
+
+        hoursEle.style.transform = `rotate(${hoursDegree}deg)`;
+        minutesEle.style.transform = `rotate(${minutesDegree}deg)`;
+        secondsEle.style.transform = `rotate(${secondsDegree}deg)`;
+
+        const convertedHours = hours > 12 ? hours - 12 : hours;
+
+        hourP.innerText = convertedHours.toString().length === 1 ? convertedHours.toString().padStart(2, '0') :
+            convertedHours;
+        minuteP.innerText = minutes.toString().length === 1 ? minutes.toString().padStart(2, '0') :
+            minutes;
+        secondP.innerText = seconds.toString().length === 1 ? seconds.toString().padStart(2, '0') :
+            seconds;
+        meridianP.innerText = hours > 12 ? "PM" : "AM";
+
+        // Play tick sound
+
+        new Audio("./sounds/tick.mp3").play();
+
+    }
+
+    setInterval(timer, 1000);
+</script>
+
+</html>
